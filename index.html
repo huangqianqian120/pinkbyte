@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PinkByte · 开发者社群</title>
   <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/font-awesome.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
@@ -35,6 +36,29 @@
       border-radius: 2px;
       box-shadow: 0 0 16px 2px #ff008a88;
       z-index: 1;
+      animation: pixelBlink 2s ease-in-out infinite;
+    }
+    @keyframes pixelBlink {
+      0%, 100% {
+        opacity: 0.3;
+        box-shadow: 0 0 16px 2px #ff008a88;
+        transform: scale(1);
+      }
+      25% {
+        opacity: 0.8;
+        box-shadow: 0 0 24px 4px #ff008aaa;
+        transform: scale(1.1);
+      }
+      50% {
+        opacity: 1;
+        box-shadow: 0 0 32px 6px #ff008acc;
+        transform: scale(1.2);
+      }
+      75% {
+        opacity: 0.6;
+        box-shadow: 0 0 20px 3px #ff008a99;
+        transform: scale(1.05);
+      }
     }
     .main-container {
       position: relative;
@@ -228,15 +252,28 @@
     }
     
     /* 语言切换样式 */
-    .lang-btn.active {
-      background: #ff008a !important;
-      color: #fff !important;
-      border-color: #ff008a !important;
-    }
-    .lang-btn:hover {
+    .lang-toggle-btn:hover {
       background: #ff008a;
       color: #fff;
       border-color: #ff008a;
+    }
+    .lang-toggle-btn.active {
+      background: #ff008a;
+      color: #fff;
+      border-color: #ff008a;
+    }
+    .lang-option:hover {
+      background: rgba(255,0,138,0.2) !important;
+    }
+    .lang-option.active {
+      background: rgba(255,0,138,0.3);
+      color: #ff008a;
+    }
+    .lang-dropdown.show {
+      display: block !important;
+    }
+    .lang-toggle-btn.open .fa-chevron-down {
+      transform: rotate(180deg);
     }
     
     /* 全局字体样式 */
@@ -261,10 +298,14 @@
     }
     
     /* 语言切换按钮字体 */
-    .lang-btn {
+    .lang-toggle-btn {
       font-family: 'Share Tech Mono', 'Orbitron', 'Monaco', 'Menlo', monospace;
       font-size: 16px !important;
       font-weight: normal;
+    }
+    .lang-option {
+      font-family: 'Share Tech Mono', 'Orbitron', 'Monaco', 'Menlo', monospace;
+      font-size: 14px;
     }
     
     /* 响应式设计优化 */
@@ -282,11 +323,22 @@
         font-size: 18px !important;
       }
       .language-switcher {
-        gap: 0.3rem !important;
+        position: relative;
       }
-      .lang-btn {
-        padding: 0.2rem 0.6rem !important;
+      .lang-toggle-btn {
+        padding: 0.4rem !important;
         font-size: 14px !important;
+      }
+      .lang-toggle-btn span {
+        display: none;
+      }
+      .lang-dropdown {
+        right: 0;
+        min-width: 100px;
+      }
+      .lang-option {
+        padding: 0.6rem 0.8rem !important;
+        font-size: 12px !important;
       }
     }
   </style>
@@ -300,9 +352,22 @@
         PinkByte
       </div>
       <!-- 语言切换 -->
-      <div class="language-switcher" style="display: flex; align-items: center; gap: 0.5rem;">
-        <button id="lang-zh" class="lang-btn active" style="background: none; border: 1px solid #ff008a; color: #ff008a; padding: 0.3rem 0.8rem; border-radius: 4px; font-size: 1rem; cursor: pointer; transition: all 0.2s;">中文</button>
-        <button id="lang-en" class="lang-btn" style="background: none; border: 1px solid #666; color: #666; padding: 0.3rem 0.8rem; border-radius: 4px; font-size: 1rem; cursor: pointer; transition: all 0.2s;">EN</button>
+      <div class="language-switcher" style="position: relative; display: flex; align-items: center;">
+        <button id="lang-toggle" class="lang-toggle-btn" style="background: none; border: 1px solid #ff008a; color: #ff008a; padding: 0.5rem; border-radius: 6px; font-size: 1.2rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fa fa-globe" style="font-size: 1.1rem;"></i>
+          <span id="current-lang">中文</span>
+          <i class="fa fa-chevron-down" style="font-size: 0.8rem; transition: transform 0.2s;"></i>
+        </button>
+        <div id="lang-dropdown" class="lang-dropdown" style="position: absolute; top: 100%; right: 0; background: rgba(17,18,23,0.95); border: 1px solid #ff008a; border-radius: 6px; min-width: 120px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); z-index: 1000; display: none; margin-top: 0.5rem;">
+          <div class="lang-option" data-lang="zh" style="padding: 0.8rem 1rem; cursor: pointer; transition: background 0.2s; border-bottom: 1px solid #333; color: #fff; display: flex; align-items: center; gap: 0.5rem;">
+            <span style="font-size: 1.1rem;">🇨🇳</span>
+            <span>中文</span>
+          </div>
+          <div class="lang-option" data-lang="en" style="padding: 0.8rem 1rem; cursor: pointer; transition: background 0.2s; color: #fff; display: flex; align-items: center; gap: 0.5rem;">
+            <span style="font-size: 1.1rem;">🇺🇸</span>
+            <span>English</span>
+          </div>
+        </div>
       </div>
     </div>
     <div class="center">
@@ -438,17 +503,51 @@
     const pixelBg = document.getElementById('pixel-bg');
     function randomInt(a, b) { return Math.floor(Math.random() * (b - a + 1)) + a; }
     function createPixelDots(num) {
+      const positions = [];
+      const minDistance = 15; // 最小距离（vw单位）
+      
       for (let i = 0; i < num; i++) {
+        let attempts = 0;
+        let validPosition = false;
+        let x, y;
+        
+        // 尝试找到一个不与现有点太近的位置
+        while (!validPosition && attempts < 50) {
+          x = randomInt(5, 95);
+          y = randomInt(10, 85);
+          
+          validPosition = true;
+          for (let pos of positions) {
+            const distance = Math.sqrt(Math.pow(x - pos.x, 2) + Math.pow(y - pos.y, 2));
+            if (distance < minDistance) {
+              validPosition = false;
+              break;
+            }
+          }
+          attempts++;
+        }
+        
+        // 如果找不到合适位置，使用随机位置
+        if (!validPosition) {
+          x = randomInt(5, 95);
+          y = randomInt(10, 85);
+        }
+        
+        positions.push({x, y});
+        
         const dot = document.createElement('div');
         dot.className = 'pixel-dot';
-        dot.style.left = randomInt(2, 98) + 'vw';
-        dot.style.top = randomInt(8, 90) + 'vh';
-        dot.style.opacity = Math.random() * 0.7 + 0.3;
+        dot.style.left = x + 'vw';
+        dot.style.top = y + 'vh';
         dot.style.width = dot.style.height = randomInt(6, 12) + 'px';
+        // 添加随机动画延迟，让闪烁效果更自然
+        dot.style.animationDelay = Math.random() * 2 + 's';
+        // 添加随机动画持续时间变化
+        dot.style.animationDuration = (1.5 + Math.random() * 1) + 's';
         pixelBg.appendChild(dot);
       }
     }
-    createPixelDots(18);
+    createPixelDots(25);
 
     // 弹窗逻辑
     const popupMask = document.getElementById('popup-mask');
@@ -481,20 +580,29 @@
     
     // 语言切换功能
     let currentLang = 'zh';
-    const langZhBtn = document.getElementById('lang-zh');
-    const langEnBtn = document.getElementById('lang-en');
+    const langToggleBtn = document.getElementById('lang-toggle');
+    const langDropdown = document.getElementById('lang-dropdown');
+    const currentLangSpan = document.getElementById('current-lang');
+    const langOptions = document.querySelectorAll('.lang-option');
     
     function switchLanguage(lang) {
       currentLang = lang;
       
-      // 更新按钮状态
+      // 更新当前语言显示
       if (lang === 'zh') {
-        langZhBtn.classList.add('active');
-        langEnBtn.classList.remove('active');
+        currentLangSpan.textContent = '中文';
       } else {
-        langEnBtn.classList.add('active');
-        langZhBtn.classList.remove('active');
+        currentLangSpan.textContent = 'English';
       }
+      
+      // 更新选项状态
+      langOptions.forEach(option => {
+        if (option.getAttribute('data-lang') === lang) {
+          option.classList.add('active');
+        } else {
+          option.classList.remove('active');
+        }
+      });
       
       // 更新页面内容
       const elements = document.querySelectorAll('[data-zh][data-en]');
@@ -507,16 +615,44 @@
       
       // 保存语言偏好
       localStorage.setItem('preferred-language', lang);
+      
+      // 关闭下拉菜单
+      langDropdown.classList.remove('show');
+      langToggleBtn.classList.remove('open');
     }
     
-    // 绑定语言切换事件
-    langZhBtn.addEventListener('click', () => switchLanguage('zh'));
-    langEnBtn.addEventListener('click', () => switchLanguage('en'));
+    // 切换下拉菜单显示/隐藏
+    langToggleBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      langDropdown.classList.toggle('show');
+      langToggleBtn.classList.toggle('open');
+    });
+    
+    // 绑定语言选项点击事件
+    langOptions.forEach(option => {
+      option.addEventListener('click', function() {
+        const lang = this.getAttribute('data-lang');
+        switchLanguage(lang);
+      });
+    });
+    
+    // 点击其他地方关闭下拉菜单
+    document.addEventListener('click', function() {
+      langDropdown.classList.remove('show');
+      langToggleBtn.classList.remove('open');
+    });
+    
+    // 阻止下拉菜单内部点击事件冒泡
+    langDropdown.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
     
     // 页面加载时恢复语言偏好
     const savedLang = localStorage.getItem('preferred-language');
     if (savedLang && savedLang === 'en') {
       switchLanguage('en');
+    } else {
+      switchLanguage('zh'); // 确保初始状态正确
     }
   </script>
 </body>
