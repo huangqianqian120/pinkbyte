@@ -253,14 +253,14 @@
     
     /* 语言切换样式 */
     .lang-toggle-btn:hover {
-      background: #ff008a;
-      color: #fff;
-      border-color: #ff008a;
+      background: rgba(255,0,138,0.1);
+      color: #ff008a;
+      border-radius: 6px;
     }
     .lang-toggle-btn.active {
-      background: #ff008a;
-      color: #fff;
-      border-color: #ff008a;
+      background: rgba(255,0,138,0.1);
+      color: #ff008a;
+      border-radius: 6px;
     }
     .lang-option:hover {
       background: rgba(255,0,138,0.2) !important;
@@ -326,12 +326,11 @@
         position: relative;
       }
       .lang-toggle-btn {
-        padding: 0.4rem !important;
-        font-size: 14px !important;
-      }
-      .lang-toggle-btn span {
-        display: none;
-      }
+         padding: 0.4rem !important;
+         font-size: 14px !important;
+         width: 36px !important;
+         height: 36px !important;
+       }
       .lang-dropdown {
         right: 0;
         min-width: 100px;
@@ -353,10 +352,8 @@
       </div>
       <!-- 语言切换 -->
       <div class="language-switcher" style="position: relative; display: flex; align-items: center;">
-        <button id="lang-toggle" class="lang-toggle-btn" style="background: none; border: 1px solid #ff008a; color: #ff008a; padding: 0.5rem; border-radius: 6px; font-size: 1.2rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem;">
-          <i class="fa fa-globe" style="font-size: 1.1rem;"></i>
-          <span id="current-lang">中文</span>
-          <i class="fa fa-chevron-down" style="font-size: 0.8rem; transition: transform 0.2s;"></i>
+        <button id="lang-toggle" class="lang-toggle-btn" style="background: none; border: none; color: #ff008a; padding: 0.5rem; font-size: 1.2rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;">
+          <i class="fa fa-globe" style="font-size: 1.2rem;"></i>
         </button>
         <div id="lang-dropdown" class="lang-dropdown" style="position: absolute; top: 100%; right: 0; background: rgba(17,18,23,0.95); border: 1px solid #ff008a; border-radius: 6px; min-width: 120px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); z-index: 1000; display: none; margin-top: 0.5rem;">
           <div class="lang-option" data-lang="zh" style="padding: 0.8rem 1rem; cursor: pointer; transition: background 0.2s; border-bottom: 1px solid #333; color: #fff; display: flex; align-items: center; gap: 0.5rem;">
@@ -582,18 +579,10 @@
     let currentLang = 'zh';
     const langToggleBtn = document.getElementById('lang-toggle');
     const langDropdown = document.getElementById('lang-dropdown');
-    const currentLangSpan = document.getElementById('current-lang');
     const langOptions = document.querySelectorAll('.lang-option');
     
     function switchLanguage(lang) {
       currentLang = lang;
-      
-      // 更新当前语言显示
-      if (lang === 'zh') {
-        currentLangSpan.textContent = '中文';
-      } else {
-        currentLangSpan.textContent = 'English';
-      }
       
       // 更新选项状态
       langOptions.forEach(option => {
